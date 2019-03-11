@@ -7,7 +7,7 @@ export const getDecks = decks => ({
 
 export const newDeck = (deckId, deckName) => ({
   type: NEW_DECK,
-  payload: { id, deckName }
+  payload: { id: deckId, deckName }
 });
 
 export const addCard = (deckId, question, answer) => ({

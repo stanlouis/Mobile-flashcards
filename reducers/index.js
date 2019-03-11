@@ -10,8 +10,8 @@ const decks = (state = {}, action) => {
     case NEW_DECK:
       return {
         ...state,
-        [action.payload.deckId]: {
-          id: action.payload.deckId,
+        [action.payload.id]: {
+          id: action.payload.id,
           name: action.payload.deckName,
           cards: []
         }
