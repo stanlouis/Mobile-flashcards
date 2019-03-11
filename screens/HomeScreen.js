@@ -1,11 +1,11 @@
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
-import Decks from "../components/Decks";
+import DeckList from "../components/DeckList";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    header: null
+    title: "Mobile Flashcards"
   };
 
   render() {
@@ -13,9 +13,7 @@ export default class HomeScreen extends React.Component {
       <View style={styles.container}>
         <ScrollView style={styles.contentContainer}>
           <View>
-            <Decks />
-            <Decks />
-            <Decks />
+            <DeckList />
           </View>
         </ScrollView>
       </View>
