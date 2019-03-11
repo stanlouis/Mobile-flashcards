@@ -20,6 +20,7 @@ const decks = (state = {}, action) => {
       return {
         ...state,
         [action.payload.deckId]: {
+          ...state[action.payload.deckId],
           cards: [
             ...state[action.payload.deckId].cards,
             { question: action.payload.question, answer: action.payload.answer }

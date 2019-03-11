@@ -14,9 +14,10 @@ const Deck = props => {
         </View>
       </CardSection>
       <CardSection>
-        <Button>Add Card</Button>
-
-        <Button>Start Quiz</Button>
+        <Button onPress={() => props.handlePress(props.item.id)}>
+          Add Card
+        </Button>
+        {props.item.cards.length > 0 && <Button>Start Quiz</Button>}
       </CardSection>
     </Card>
   );
