@@ -22,7 +22,7 @@ class AddDeckScreen extends React.Component {
     console.log("newDeck", newDeck);
 
     this.props.newDeck(newDeck.id, newDeck.name);
-    this.setState({ title: "" });
+    this.setState({ name: "" });
     this.props.navigation.navigate("DeckList");
   };
 

@@ -8,11 +8,11 @@ import {
 import TabBarIcon from "../components/TabBarIcon";
 import AddCard from "../components/AddCard";
 import DeckList from "../components/DeckList";
-import HomeScreen from "../screens/HomeScreen";
+import Quiz from "../components/Quiz";
 import AddDeckScreen from "../screens/AddDeckScreen";
 
 const HomeStack = createStackNavigator({
-  Home: HomeScreen
+  Home: DeckList
 });
 
 HomeStack.navigationOptions = {
@@ -48,7 +48,8 @@ const MainStack = createStackNavigator(
   {
     Home: BottomNavigator,
     AddCard: AddCard,
-    DeckList: DeckList
+    DeckList: DeckList,
+    Quiz: Quiz
   },
   { initialRouteName: "Home" }
 );

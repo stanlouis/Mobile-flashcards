@@ -4,16 +4,19 @@ import { addCard } from "../actions";
 import { Button, Card, CardSection, Input } from "./common";
 
 class AddCard extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: `${navigation.getParam("deck").name}`
+  });
+
   state = {
     question: "",
     answer: ""
   };
 
   handleSubmit = () => {
-    const id = this.props.navigation.state.params.id;
+    const deck = this.props.navigation.getParam("deck");
     const { question, answer } = this.state;
-    console.log(id, question, answer);
-    this.props.addCard(id, question, answer);
+    this.props.addCard(deck.id, question, answer);
     this.setState({ question: "", answer: "" });
     this.props.navigation.goBack();
   };

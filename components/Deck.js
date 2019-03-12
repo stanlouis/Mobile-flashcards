@@ -2,22 +2,20 @@ import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Card, CardSection, Button } from "./common";
 
-const Deck = props => {
+const Deck = ({ item, handleAddCard, handleStartQuiz }) => {
   return (
     <Card>
       <CardSection>
         <View style={styles.deck}>
-          <Text style={styles.deckTextStyle}>{props.item.name}</Text>
-          <Text style={styles.cardTextStyle}>
-            Cards: {props.item.cards.length}
-          </Text>
+          <Text style={styles.deckTextStyle}>{item.name}</Text>
+          <Text style={styles.cardTextStyle}>Cards: {item.cards.length}</Text>
         </View>
       </CardSection>
       <CardSection>
-        <Button onPress={() => props.handlePress(props.item.id)}>
-          Add Card
-        </Button>
-        {props.item.cards.length > 0 && <Button>Start Quiz</Button>}
+        <Button onPress={() => handleAddCard(item)}>Add Card</Button>
+        {item.cards.length > 0 && (
+          <Button onPress={() => handleStartQuiz(item)}>Start Quiz</Button>
+        )}
       </CardSection>
     </Card>
   );

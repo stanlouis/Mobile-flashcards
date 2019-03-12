@@ -7,14 +7,31 @@ import { CardSection } from "./common";
 import Deck from "./Deck";
 
 class DeckList extends Component {
-  handlePress = id => {
-    this.props.navigation.navigate("AddCard", { id: id });
+  static navigationOptions = {
+    title: "Mobile Flashcards"
+  };
+  componentDidMount() {
+    this.props.getDecks();
+  }
+
+  handleAddCard = deck => {
+    this.props.navigation.navigate("AddCard", { deck: deck });
+  };
+
+  handleStartQuiz = deck => {
+    this.props.navigation.navigate("Quiz", { deck: deck });
   };
 
   _keyExtractor = (item, index) => index.toString();
 
   renderItem = ({ item }) => {
-    return <Deck item={item} handlePress={this.handlePress} />;
+    return (
+      <Deck
+        item={item}
+        handleAddCard={this.handleAddCard}
+        handleStartQuiz={this.handleStartQuiz}
+      />
+    );
   };
 
   renderDecks = () => {
