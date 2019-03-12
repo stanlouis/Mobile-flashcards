@@ -10,7 +10,7 @@ const style = {
     borderBottomWith: 1,
     padding: 5,
     backgroundColor: "#fff",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     flexDirection: "row",
     borderWidth: 0.5,
     borderColor: "#ddd",

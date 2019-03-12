@@ -2,7 +2,7 @@ import { GET_DECKS, NEW_DECK, ADD_CARD } from "./types";
 
 export const getDecks = decks => ({
   type: GET_DECKS,
-  payload: decks
+  decks
 });
 
 export const newDeck = (deckId, deckName) => ({

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 import { Button, Card, CardSection, Input } from "../components/common";
 import { newDeck } from "../actions";
+import { saveDeck } from "../utils/mock_db";
 
 class AddDeckScreen extends React.Component {
   static navigationOptions = {
@@ -17,9 +18,12 @@ class AddDeckScreen extends React.Component {
   handleSubmit = () => {
     const newDeck = {
       id: uuid(),
-      name: this.state.name
+      name: this.state.name,
+      cards: []
     };
-    console.log("newDeck", newDeck);
+    console.log("newDeck", newDeck, "saveDeck", saveDeck);
+    // save deck
+    saveDeck(newDeck);
 
     this.props.newDeck(newDeck.id, newDeck.name);
     this.setState({ name: "" });

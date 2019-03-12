@@ -1,7 +1,15 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import {
+  ActivityIndicator,
+  AsyncStorage,
+  FlatList,
+  StyleSheet,
+  Text,
+  View
+} from "react-native";
 import { connect } from "react-redux";
 import { getDecks } from "../actions";
+import { getSavedDecks } from "../utils/mock_db";
 
 import { CardSection } from "./common";
 import Deck from "./Deck";
@@ -10,8 +18,28 @@ class DeckList extends Component {
   static navigationOptions = {
     title: "Mobile Flashcards"
   };
+
+  state = {
+    isLoading: true
+  };
+
+  2;
+
+  clearAsyncStorage = async () => {
+    return await AsyncStorage.clear();
+  };
+
   componentDidMount() {
-    this.props.getDecks();
+    getSavedDecks()
+      .then(decks => {
+        console.log("from getSavedDecks", decks);
+        return this.props.getDecks(decks);
+      })
+      .then(() => {
+        this.setState({ isLoading: false });
+      });
+    // for testing, to be deleted
+    // this.clearAsyncStorage();
   }
 
   handleAddCard = deck => {
@@ -36,6 +64,7 @@ class DeckList extends Component {
 
   renderDecks = () => {
     const { decks } = this.props;
+    console.log(decks);
     if (Object.values(decks).length > 0) {
       return (
         <FlatList
@@ -55,6 +84,13 @@ class DeckList extends Component {
   };
 
   render() {
+    if (this.state.isLoading) {
+      return (
+        <View style={styles.deck}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      );
+    }
     return <View>{this.renderDecks()}</View>;
   }
 }

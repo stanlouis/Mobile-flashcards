@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addCard } from "../actions";
 import { Button, Card, CardSection, Input } from "./common";
+import { saveCard } from "../utils/mock_db";
 
 class AddCard extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -17,6 +18,7 @@ class AddCard extends Component {
     const deck = this.props.navigation.getParam("deck");
     const { question, answer } = this.state;
     this.props.addCard(deck.id, question, answer);
+    saveCard(deck.id, { question, answer });
     this.setState({ question: "", answer: "" });
     this.props.navigation.goBack();
   };
