@@ -11,36 +11,87 @@ class Quiz extends Component {
     questionIndex: 0,
     correctAnswer: 0,
     totalQuestions: 0,
-    displayResults: false
+    displayResults: false,
+    displayQuestion: true
   };
 
-  handleCorrectAnswer = () => {
-    this.setState({ correctAnswer: this.state.correctAnswer + 1 });
+  handleCorrectAnswer = deck => {
+    const { questionIndex } = this.state;
+    if (questionIndex === deck.cards.length - 1) {
+      this.setState({ displayResults: true });
+    } else {
+      this.setState({
+        correctAnswer: this.state.correctAnswer + 1,
+        questionIndex: this.state.questionIndex + 1,
+        // revert to question
+        displayQuestion: true
+      });
+    }
+  };
+  handleInCorrectAnswer = deck => {
+    const { questionIndex } = this.state;
+    if (questionIndex === deck.cards.length - 1) {
+      this.setState({ displayResults: true });
+    } else {
+      this.setState({
+        questionIndex: this.state.questionIndex + 1,
+        // revert to question
+        displayQuestion: true
+      });
+    }
+  };
+
+  handleDisplay = deck => {
+    const { questionIndex, displayQuestion } = this.state;
+    const card = deck.cards[questionIndex];
+
+    return displayQuestion ? card.question : card.answer;
+  };
+
+  handleAnswer = () => {
+    this.setState({ displayQuestion: !this.state.displayQuestion });
+  };
+
+  handleAnswerQuestion = () => {
+    return this.state.displayQuestion ? "Answer" : "Question";
   };
 
   render() {
     const deck = this.props.navigation.getParam("deck");
     console.log("deck from quiz", deck);
-    return (
-      <Card>
-        <CardSection>
-          <View style={styles.content}>
-            <Text>
-              {this.state.questionIndex + 1} / {deck.cards.length}
-            </Text>
-            <Text style={styles.cardTextStyle}>{deck.cards[0].question}</Text>
-            <TouchableOpacity style={styles.button}>
-              <Text>Answer</Text>
-            </TouchableOpacity>
-          </View>
-        </CardSection>
-        <CardSection>
-          <Button>Correct</Button>
+    if (!this.state.displayResults) {
+      return (
+        <Card>
+          <CardSection>
+            <View style={styles.content}>
+              <Text>
+                Question {this.state.questionIndex + 1} of {deck.cards.length}
+              </Text>
+              <Text style={styles.questionText}>
+                {this.handleDisplay(deck)}
+              </Text>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={this.handleAnswer}
+              >
+                <Text>{this.handleAnswerQuestion()}</Text>
+              </TouchableOpacity>
+            </View>
+          </CardSection>
+          <CardSection>
+            <Button onPress={() => this.handleCorrectAnswer(deck)}>
+              Correct
+            </Button>
 
-          <Button>Incorrect</Button>
-        </CardSection>
-      </Card>
-    );
+            <Button onPress={() => this.handleInCorrectAnswer(deck)}>
+              Incorrect
+            </Button>
+          </CardSection>
+        </Card>
+      );
+    }
+
+    return <Text>No more Questions</Text>;
   }
 }
 
@@ -63,6 +114,10 @@ const styles = StyleSheet.create({
     padding: 10,
     borderColor: "#007aff",
     borderWidth: 2
+  },
+  questionText: {
+    fontSize: 24,
+    paddingVertical: 10
   }
 });
 
