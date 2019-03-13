@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+import { setLocalNotification, clearLocalNotification } from "./helpers";
 import { Button, Card, CardSection } from "./common";
 
 class Quiz extends Component {
@@ -10,7 +12,7 @@ class Quiz extends Component {
   state = {
     questionIndex: 0,
     correctAnswer: 0,
-    totalQuestions: 0,
+    incorrectAnswer: 0,
     displayResults: false,
     displayQuestion: true
   };
@@ -19,8 +21,8 @@ class Quiz extends Component {
     const { questionIndex } = this.state;
     if (questionIndex === deck.cards.length - 1) {
       this.setState({
-        displayResults: true,
-        correctAnswer: this.state.correctAnswer + 1
+        correctAnswer: this.state.correctAnswer + 1,
+        displayResults: true
       });
     } else {
       this.setState({
@@ -34,10 +36,14 @@ class Quiz extends Component {
   handleInCorrectAnswer = deck => {
     const { questionIndex } = this.state;
     if (questionIndex === deck.cards.length - 1) {
-      this.setState({ displayResults: true });
+      this.setState({
+        incorrectAnswer: this.state.incorrectAnswer + 1,
+        displayResults: true
+      });
     } else {
       this.setState({
         questionIndex: this.state.questionIndex + 1,
+        incorrectAnswer: this.state.incorrectAnswer + 1,
         // revert to question
         displayQuestion: true
       });
@@ -63,14 +69,17 @@ class Quiz extends Component {
     this.setState({
       questionIndex: 0,
       correctAnswer: 0,
-      totalQuestions: 0,
+      incorrectAnswer: 0,
       displayResults: false,
       displayQuestion: true
     });
   };
 
-  handleResult = deck => {
-    return `${(100 * this.state.correctAnswer) / deck.cards.length}% correct`;
+  handleResult = () => {
+    const { incorrectAnswer, correctAnswer } = this.state;
+    return `${Math.round(
+      (100 * correctAnswer) / (correctAnswer + incorrectAnswer)
+    )}% correct`;
   };
 
   handleRedirect = () => this.props.navigation.navigate("Home");
@@ -79,6 +88,8 @@ class Quiz extends Component {
     const deck = this.props.navigation.getParam("deck");
     console.log("deck from quiz", deck);
     if (!this.state.displayResults) {
+      clearLocalNotification();
+      setLocalNotification();
       return (
         <Card>
           <CardSection>
@@ -95,11 +106,11 @@ class Quiz extends Component {
               </TouchableOpacity>
             </View>
           </CardSection>
+
           <CardSection>
             <Button onPress={() => this.handleCorrectAnswer(deck)}>
               Correct
             </Button>
-
             <Button onPress={() => this.handleInCorrectAnswer(deck)}>
               Incorrect
             </Button>
@@ -113,7 +124,7 @@ class Quiz extends Component {
         <CardSection>
           <View style={styles.content}>
             <Text style={styles.headerText}>Your Score</Text>
-            <Text style={styles.scoreText}>{this.handleResult(deck)}</Text>
+            <Text style={styles.scoreText}>{this.handleResult()}</Text>
           </View>
         </CardSection>
         <CardSection>
