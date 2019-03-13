@@ -18,7 +18,10 @@ class Quiz extends Component {
   handleCorrectAnswer = deck => {
     const { questionIndex } = this.state;
     if (questionIndex === deck.cards.length - 1) {
-      this.setState({ displayResults: true });
+      this.setState({
+        displayResults: true,
+        correctAnswer: this.state.correctAnswer + 1
+      });
     } else {
       this.setState({
         correctAnswer: this.state.correctAnswer + 1,
@@ -53,9 +56,18 @@ class Quiz extends Component {
   };
 
   handleAnswerQuestion = () => {
-    return this.state.displayQuestion ? "Answer" : "Question";
+    return this.state.displayQuestion ? "View Answer" : "View Question";
   };
 
+  handleReset = () => {
+    this.setState({
+      questionIndex: 0,
+      correctAnswer: 0,
+      totalQuestions: 0,
+      displayResults: false,
+      displayQuestion: true
+    });
+  };
   render() {
     const deck = this.props.navigation.getParam("deck");
     console.log("deck from quiz", deck);
@@ -67,9 +79,7 @@ class Quiz extends Component {
               <Text>
                 Question {this.state.questionIndex + 1} of {deck.cards.length}
               </Text>
-              <Text style={styles.questionText}>
-                {this.handleDisplay(deck)}
-              </Text>
+              <Text style={styles.headerText}>{this.handleDisplay(deck)}</Text>
               <TouchableOpacity
                 style={styles.button}
                 onPress={this.handleAnswer}
@@ -91,7 +101,25 @@ class Quiz extends Component {
       );
     }
 
-    return <Text>No more Questions</Text>;
+    return (
+      <Card>
+        <CardSection>
+          <View style={styles.content}>
+            <Text style={styles.headerText}>Your Score</Text>
+            <Text style={styles.scoreText}>
+              {(100 * this.state.correctAnswer) / deck.cards.length}% correct
+            </Text>
+          </View>
+        </CardSection>
+        <CardSection>
+          <Button onPress={this.handleReset}>Reset</Button>
+
+          <Button onPress={() => this.props.navigation.navigate("Home")}>
+            Home
+          </Button>
+        </CardSection>
+      </Card>
+    );
   }
 }
 
@@ -115,8 +143,12 @@ const styles = StyleSheet.create({
     borderColor: "#007aff",
     borderWidth: 2
   },
-  questionText: {
+  headerText: {
     fontSize: 24,
+    paddingVertical: 10
+  },
+  scoreText: {
+    fontSize: 20,
     paddingVertical: 10
   }
 });
