@@ -68,6 +68,13 @@ class Quiz extends Component {
       displayQuestion: true
     });
   };
+
+  handleResult = deck => {
+    return `${(100 * this.state.correctAnswer) / deck.cards.length}% correct`;
+  };
+
+  handleRedirect = () => this.props.navigation.navigate("Home");
+
   render() {
     const deck = this.props.navigation.getParam("deck");
     console.log("deck from quiz", deck);
@@ -106,17 +113,13 @@ class Quiz extends Component {
         <CardSection>
           <View style={styles.content}>
             <Text style={styles.headerText}>Your Score</Text>
-            <Text style={styles.scoreText}>
-              {(100 * this.state.correctAnswer) / deck.cards.length}% correct
-            </Text>
+            <Text style={styles.scoreText}>{this.handleResult(deck)}</Text>
           </View>
         </CardSection>
         <CardSection>
           <Button onPress={this.handleReset}>Reset</Button>
 
-          <Button onPress={() => this.props.navigation.navigate("Home")}>
-            Home
-          </Button>
+          <Button onPress={this.handleRedirect}>Home</Button>
         </CardSection>
       </Card>
     );

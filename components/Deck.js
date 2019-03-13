@@ -1,23 +1,27 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { Card, CardSection, Button } from "./common";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Card, CardSection } from "./common";
 
-const Deck = ({ item, handleAddCard, handleStartQuiz }) => {
+const Deck = ({ item, handleAddCard, handleStartQuiz, navigation }) => {
   return (
-    <Card>
-      <CardSection>
-        <View style={styles.deck}>
-          <Text style={styles.deckTextStyle}>{item.name}</Text>
-          <Text style={styles.cardTextStyle}>Cards: {item.cards.length}</Text>
-        </View>
-      </CardSection>
-      <CardSection>
-        <Button onPress={() => handleAddCard(item)}>Add Card</Button>
-        {item.cards.length > 0 && (
-          <Button onPress={() => handleStartQuiz(item)}>Start Quiz</Button>
-        )}
-      </CardSection>
-    </Card>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("DeckDetails", {
+          deckId: item.id,
+          handleAddCard,
+          handleStartQuiz
+        })
+      }
+    >
+      <Card>
+        <CardSection>
+          <View style={styles.deck}>
+            <Text style={styles.deckTextStyle}>{item.name}</Text>
+            <Text style={styles.cardTextStyle}>Cards: {item.cards.length}</Text>
+          </View>
+        </CardSection>
+      </Card>
+    </TouchableOpacity>
   );
 };
 

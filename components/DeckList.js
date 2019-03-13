@@ -42,14 +42,6 @@ class DeckList extends Component {
     // this.clearAsyncStorage();
   }
 
-  handleAddCard = deck => {
-    this.props.navigation.navigate("AddCard", { deck: deck });
-  };
-
-  handleStartQuiz = deck => {
-    this.props.navigation.navigate("Quiz", { deck: deck });
-  };
-
   _keyExtractor = (item, index) => index.toString();
 
   renderItem = ({ item }) => {
@@ -58,13 +50,14 @@ class DeckList extends Component {
         item={item}
         handleAddCard={this.handleAddCard}
         handleStartQuiz={this.handleStartQuiz}
+        navigation={this.props.navigation}
       />
     );
   };
 
   renderDecks = () => {
     const { decks } = this.props;
-    console.log(decks);
+
     if (Object.values(decks).length > 0) {
       return (
         <FlatList

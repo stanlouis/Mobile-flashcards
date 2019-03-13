@@ -10,6 +10,7 @@ import AddCard from "../components/AddCard";
 import DeckList from "../components/DeckList";
 import Quiz from "../components/Quiz";
 import AddDeckScreen from "../screens/AddDeckScreen";
+import DeckDetails from "../components/DeckDetails";
 
 const HomeStack = createStackNavigator({
   Home: DeckList
@@ -49,6 +50,7 @@ const MainStack = createStackNavigator(
     Home: BottomNavigator,
     AddCard: AddCard,
     DeckList: DeckList,
+    DeckDetails: DeckDetails,
     Quiz: Quiz
   },
   { initialRouteName: "Home" }
