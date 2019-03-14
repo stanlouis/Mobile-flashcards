@@ -15,7 +15,6 @@ class DeckDetails extends Component {
   render() {
     const { deck } = this.props;
 
-    console.log("deck from deckdetails", deck);
     return (
       <Card>
         <CardSection>
